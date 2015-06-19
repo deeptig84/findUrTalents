@@ -1,9 +1,9 @@
 var express = require('express');
 var stormpath = require('express-stormpath');
-
+var path = require('path');
 var app = express();
 
-app.set('views', './views');
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 var stormpathMiddleware = stormpath.init(app, {
@@ -21,5 +21,6 @@ app.get('/', function(req, res) {
     title: 'Welcome'
   });
 });
-app.use('/profile',stormpath.loginRequired,require('./views/profile')());
+app.use('/profile',stormpath.loginRequired,require('./views/profile/profile')());
+app.use('/shineLikeAStar', stormpath.groupsRequired(['shineLikeAStar']),require('./views/shineLikeAStar/shineLikeAStar')());
 app.listen(3000);
